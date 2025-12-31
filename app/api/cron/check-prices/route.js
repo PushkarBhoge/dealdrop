@@ -77,7 +77,7 @@ export async function POST(request) {
 
             const {
               data: { user },
-            } = await supabase.auth.getUserById(product.user_id);
+            } = await supabase.auth.admin.getUserById(product.user_id);
 
             if (user?.email) {
               // Send email
@@ -112,3 +112,5 @@ export async function POST(request) {
     return NextResponse.json({error: error.message}, { status: 500 })
   }
 }
+
+// curl -X POST https://dealdrop-teal.vercel.app/api/cron/check-prices -H "Authorization: Bearer 61188baa94a97fb3fee1300cac36cd4269c9f898acc095382c143b3592f38d9f"
