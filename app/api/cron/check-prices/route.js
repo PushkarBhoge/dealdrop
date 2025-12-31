@@ -1,13 +1,7 @@
-import { sendPriceDropAlert } from "@/lib/email";
-import { scrapeProduct } from "@/lib/firecrawl";
-import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
-
-export async function GET() {
-  return NextResponse.json({
-    message: "Price check endpoint is working. Use POST to trigger.",
-  });
-}
+import { createClient } from "@supabase/supabase-js";
+import { scrapeProduct } from "@/lib/firecrawl";
+import { sendPriceDropAlert } from "@/lib/email";
 
 export async function POST(request) {
   try {
@@ -15,7 +9,7 @@ export async function POST(request) {
     const cronSecret = process.env.CRON_SECRET;
 
     if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // Use service role to bypass RLS
@@ -50,7 +44,7 @@ export async function POST(request) {
         }
 
         const newPrice = parseFloat(productData.currentPrice);
-        const oldPrice = parseFloat(product.currentPrice);
+        const oldPrice = parseFloat(product.current_price);
 
         await supabase
           .from("products")
@@ -73,14 +67,11 @@ export async function POST(request) {
           results.priceChanges++;
 
           if (newPrice < oldPrice) {
-            // Alert
-
             const {
               data: { user },
             } = await supabase.auth.admin.getUserById(product.user_id);
 
             if (user?.email) {
-              // Send email
               const emailResult = await sendPriceDropAlert(
                 user.email,
                 product,
@@ -88,7 +79,7 @@ export async function POST(request) {
                 newPrice
               );
 
-              if(emailResult.success) {
+              if (emailResult.success) {
                 results.alertsSent++;
               }
             }
@@ -104,13 +95,17 @@ export async function POST(request) {
 
     return NextResponse.json({
       success: true,
-      message: "Price check completed.",
+      message: "Price check completed",
       results,
     });
   } catch (error) {
     console.error("Cron job error:", error);
-    return NextResponse.json({error: error.message}, { status: 500 })
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
 
-// curl -X POST https://dealdrop-teal.vercel.app/api/cron/check-prices -H "Authorization: Bearer 61188baa94a97fb3fee1300cac36cd4269c9f898acc095382c143b3592f38d9f"
+export async function GET() {
+  return NextResponse.json({
+    message: "Price check endpoint is working. Use POST to trigger.",
+  });
+}
