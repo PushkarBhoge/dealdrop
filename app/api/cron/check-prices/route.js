@@ -58,6 +58,8 @@ export async function POST(request) {
           .eq("id", product.id);
 
         if (oldPrice !== newPrice) {
+          console.log(`Price change detected for product ${product.id}: ${oldPrice} -> ${newPrice}`);
+          
           await supabase.from("price_history").insert({
             product_id: product.id,
             price: newPrice,
@@ -67,11 +69,16 @@ export async function POST(request) {
           results.priceChanges++;
 
           if (newPrice < oldPrice) {
+            console.log(`Price drop detected for product ${product.id}: ${oldPrice} -> ${newPrice}`);
+            
             const {
               data: { user },
             } = await supabase.auth.admin.getUserById(product.user_id);
 
+            console.log(`User found:`, user?.email ? 'Yes' : 'No', user?.email);
+
             if (user?.email) {
+              console.log(`Sending email to ${user.email}`);
               const emailResult = await sendPriceDropAlert(
                 user.email,
                 product,
@@ -79,8 +86,13 @@ export async function POST(request) {
                 newPrice
               );
 
+              console.log(`Email result:`, emailResult);
+
               if (emailResult.success) {
                 results.alertsSent++;
+                console.log(`Alert sent successfully. Total alerts: ${results.alertsSent}`);
+              } else {
+                console.log(`Email failed:`, emailResult.error);
               }
             }
           }
