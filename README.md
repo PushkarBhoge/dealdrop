@@ -20,32 +20,15 @@
 - **Responsive Design**: Beautiful UI that works on all devices
 
 ## 🖥️ Live Demo
+https://dealdrop-teal.vercel.app
 
-### Homepage
-![Homepage Screenshot](https://via.placeholder.com/800x400/FA5D19/FFFFFF?text=DealDrop+Homepage)
+### Pages
+<img width="1917" height="872" alt="image" src="https://github.com/user-attachments/assets/b8ca8ee3-0983-4328-861c-d0a6ec25855b" />
+<img width="1918" height="871" alt="image" src="https://github.com/user-attachments/assets/78592b1a-cf46-4b01-b488-b52d8fcebaa1" />
+<img width="1918" height="868" alt="image" src="https://github.com/user-attachments/assets/dd15b9f4-d22b-446a-8d9b-9a1a4f8a5d7d" />
 
-**Key Elements:**
-- Clean, modern interface with orange gradient theme
-- Product URL input form for easy tracking
-- Feature highlights with icons
-- User authentication integration
-
-### Product Dashboard
-![Dashboard Screenshot](https://via.placeholder.com/800x400/FFFFFF/333333?text=Product+Dashboard)
-
-**Features Shown:**
-- Grid layout of tracked products
-- Current prices and product images
-- Price change indicators
-- Quick actions for each product
-
-### Price History Chart
-![Price Chart Screenshot](https://via.placeholder.com/800x300/F3F4F6/333333?text=Price+History+Chart)
-
-**Visualization:**
-- Interactive price trend graphs
-- Historical data points
-- Price drop highlights
+### Email
+<img width="1918" height="867" alt="image" src="https://github.com/user-attachments/assets/db2044b9-6bb1-4dbc-8b16-e3dc93f702cf" />
 
 ## 🚀 Getting Started
 
